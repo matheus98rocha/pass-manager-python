@@ -1,22 +1,27 @@
-pwd = input("What is the master password? ")
-
-def view():
-    pass
-
-def add():
-    pass
+from cryptography.fernet import Fernet
 
 
-while True:
-    mode = input("Would you like to add a new password or view existing ones (view, add)? Press q to quit")
+class PasswordManager:
+    def __init__(self):
+        self.key = None
+        self.password_file = None
+        self.password_dict = {}
 
-    if mode == "q":
-        break
+    def create_key(self, path):
+        self.key = Fernet.generate_key()
+        with open(path, 'wb') as f:
+            f.write(self.key)
 
-    if mode == "view":
-        pass
-    elif mode == "add":
-        pass
-    else:
-        print("Invalid mode")
-        continue
+    def load_key(self, path):
+        with open(path, 'rb') as f:
+            self.key = f.read()
+
+    def create_password(self, path, initial_values=None):
+        self.password_file = path
+
+        if initial_values is not None:
+            for key, value in initial_values.items():
+
+
+pm = PasswordManager()
+pm.create_key("mykey.key")
